@@ -74,6 +74,7 @@ bazel run tensorflow/examples/speech_commands:train -- \
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+import time
 
 import argparse
 import os.path
@@ -252,6 +253,7 @@ def main(_):
 
         # Run a validation step and capture training summaries for TensorBoard
         # with the `merged` op.
+        time1 = time.time()
         validation_summary, validation_accuracy, conf_matrix = sess.run(
             [merged_summaries, evaluation_step, confusion_matrix],
             feed_dict={
@@ -259,6 +261,8 @@ def main(_):
                 ground_truth_input: validation_ground_truth,
                 dropout_prob: 1.0
             })
+        time2 = time.time()
+        print ("TIMMEEEEEE: ", (time2 - time1))
         validation_writer.add_summary(validation_summary, training_step)
         batch_size = min(FLAGS.batch_size, set_size - i)
         total_accuracy += (validation_accuracy * batch_size) / set_size
